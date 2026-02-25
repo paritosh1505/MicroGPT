@@ -1,0 +1,126 @@
+DATA & TOKENIZATION
+
+What is a character-level tokenizer? How does it differ from BPE/wordpiece?
+What is a vocabulary and vocab size?
+Why do we need a special BOS token? What role does it play at both ends of a sequence?
+What does it mean to map characters to integer IDs?
+Why shuffle the dataset before training?
+
+
+AUTOGRAD / COMPUTATION GRAPH
+
+What is a scalar computation graph?
+What is forward pass vs backward pass?
+What is the chain rule and how does backpropagation apply it?
+What is a topological sort and why do we reverse it during backward?
+What is a local gradient vs global gradient?
+What does grad = 0 initialization mean and why do we accumulate with +=?
+Why do we zero gradients after each step?
+What are the derivatives of: add, multiply, power, log, exp, relu?
+Why does exp have itself as its own derivative?
+What is the gradient of softmax + cross-entropy combined? Why is it numerically tricky?
+
+
+EMBEDDINGS
+
+What is a token embedding (wte)? What shape is it?
+What is a positional embedding (wpe)? Why does a transformer need it?
+Why do we add token and position embeddings instead of concatenating?
+What is block_size and why does it cap the context?
+
+
+NORMALIZATION
+
+What is RMSNorm vs LayerNorm? What's the formula?
+Why normalize before attention/MLP (pre-norm) instead of after?
+Why is the comment "not redundant due to backward pass via residual" correct? What does that mean mechanistically?
+What is the epsilon (1e-5) for in normalization?
+
+
+LINEAR / MATRIX OPERATIONS
+
+What is a linear (dense) layer? Why no bias here?
+How does matrix-vector multiplication work? (The linear() function does this manually)
+What is the gradient of a linear layer w.r.t. weights and input?
+
+
+ATTENTION MECHANISM
+
+What is self-attention conceptually?
+What are Q, K, V and what do each represent?
+Why do we compute dot(Q, K) / sqrt(head_dim)? What goes wrong without the scaling?
+What is softmax doing to attention logits?
+How do attention weights select/mix value vectors?
+What is multi-head attention? Why split into heads?
+What is head_dim = n_embd // n_head?
+How does the KV cache work here? Why do keys and values grow per position?
+Why is this attention causal (autoregressive)? How is masking avoided here vs explicit masking?
+What is attn_wo (output projection) doing?
+What is a residual (skip) connection and why does it help training?
+
+
+MLP BLOCK
+
+What is the role of the MLP block after attention?
+Why is the hidden dim 4 * n_embd? (Convention from original transformer)
+What is ReLU? What is its derivative? Why use it here vs GeLU?
+Why is there a residual connection around the MLP too?
+
+
+LOSS FUNCTION
+
+What is a logit vs a probability?
+What is softmax? Derive it.
+What is cross-entropy loss? Why -log(p_target)?
+Why do we subtract max_val before exp in softmax? (Numerical stability)
+What does averaging loss over the sequence mean?
+
+
+WEIGHT INITIALIZATION
+
+Why initialize weights with Gaussian noise (std=0.08)?
+What goes wrong with zero initialization? What about too-large std?
+What is Xavier/He initialization and how does this relate?
+
+
+ADAM OPTIMIZER
+
+What is gradient descent?
+What is momentum (first moment, beta1)?
+What is RMSProp (second moment, beta2)?
+How does Adam combine both?
+What is bias correction (/ (1 - beta^t))? Why is it needed early in training?
+What is learning rate and why does it matter?
+What is learning rate decay? Why linear decay here?
+What is epsilon in Adam for?
+
+
+INFERENCE / SAMPLING
+
+What is autoregressive generation?
+What is temperature in sampling? How does dividing logits by temperature sharpen/flatten distribution?
+What is random.choices with weights doing? (Multinomial sampling)
+Why do we stop at BOS token during inference?
+What is greedy decoding vs sampling vs beam search?
+
+
+TRANSFORMER ARCHITECTURE (BIG PICTURE)
+
+What is the overall GPT architecture? (Embedding → N × [Attn + MLP] → LM head)
+What is the LM head and why does it share shape with wte? (Weight tying — not done here but worth knowing)
+What is n_layer, n_embd, n_head and how do they interact?
+Why does the model process one token at a time during inference but the full sequence during training?
+
+
+C++ SPECIFIC (before porting)
+
+How do you represent a 2D matrix in C++? (vector<vector<float>> vs flat array)
+How do you implement a dynamic computation graph in C++ (nodes with pointers, backward lambdas)?
+How do you avoid memory leaks with graph nodes? (smart pointers / arena allocator)
+How do you implement topological sort in C++?
+What is the difference between float and double? Which to use?
+How do you implement random.gauss in C++? (std::normal_distribution)
+How do you implement random.choices with weights? (std::discrete_distribution)
+How do you handle dynamic-size vectors efficiently during KV cache growth?
+How do you structure the training loop cleanly in C++?
+How do you benchmark and profile C++ vs Python for this?
