@@ -1,10 +1,23 @@
 DATA & TOKENIZATION
 
-What is a character-level tokenizer? How does it differ from BPE/wordpiece?
-What is a vocabulary and vocab size?
-Why do we need a special BOS token? What role does it play at both ends of a sequence?
-What does it mean to map characters to integer IDs?
-Why shuffle the dataset before training?
+***Q: What is a character-level tokenizer and how does it differ from BPE/WordPiece?***  
+
+A: character-level tokenizer treats each individual character as a token, so a word like “hello” becomes a sequence of five character tokens. In contrast, BPE and WordPiece start from characters but iteratively merge the most frequent adjacent token pairs to form subword units, allowing common patterns such as “low” or “ing” to become single tokens. Character tokenization is simple but produces longer sequences, while BPE/WordPiece reduces sequence length and captures meaningful subword structure.
+
+***Q: What is a vocabulary and what is vocab size?***  
+
+A: vocabulary is the complete set of unique tokens that a tokenizer recognizes, including regular tokens and any special tokens such as BOS or EOS. The vocab size is the total number of unique tokens in that set, which determines the size of the embedding matrix used by the model.
+
+***Q: Why do we need a special BOS token and what role does it play?***
+
+A: The BOS (Beginning Of Sequence) token marks the start of an input sequence and provides the model with a consistent initial context for prediction. It signals where generation or processing should begin and helps the model learn positional structure, but it does not represent actual text content.
+
+***Q: What does it mean to map characters to integer IDs?***  
+
+A: Mapping characters or tokens to integer IDs means assigning each token a unique numerical index so it can be converted into embeddings and processed by a neural network. Since neural networks operate on numeric tensors, raw text must first be transformed into integer representations.
+
+***Q: Why do we shuffle the dataset before training?***  ```````````````````````````````````````````````````````````````````````````````````w
+A: Shuffling the dataset ensures that training batches contain a diverse mix of samples, preventing the model from learning spurious patterns based on data ordering. It stabilizes stochastic gradient descent and improves generalization by reducing bias introduced by sequential data arrangement.
 
 
 AUTOGRAD / COMPUTATION GRAPH

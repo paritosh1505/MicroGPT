@@ -5,14 +5,14 @@
 #include <vector>
 class Tokenizer {
 private:
-  std::vector<char> charEntry;
-  std::unordered_map<char, int> mapVal;
+  std::vector<char> id_to_char;
+  std::unordered_map<char, int> char_to_id;
   int BOS;
 
 public:
-  Tokenizer(std::vector<std::string> &docs);
+  Tokenizer(const std::vector<std::string> &docs);
   std::vector<int> encode(const std::string &text) const;
-  std::string decode(std::vector<int> &token) const;
+  std::string decode(const std::vector<int> &token) const;
 
   int vocab_size() const;
   int bos_token() const;
